@@ -5,13 +5,15 @@ function getHostname(c) {
 }
 
 function Elasticsearch(n) {
-  const ref = new quilt.Container('elasticsearch', 'elasticsearch:2.4', {
-    command: [
-      '--transport.tcp.port', `${this.transportPorts.min}-${this.transportPorts.max}`,
-      '--http.port', this.port.toString(),
-    ],
-  });
-  this.containers = ref.replicate(n);
+  this.containers = [];
+  for (let i = 0; i < n; i += 1) {
+    this.containers.push(new quilt.Container('elasticsearch', 'elasticsearch:2.4', {
+      command: [
+        '--transport.tcp.port', `${this.transportPorts.min}-${this.transportPorts.max}`,
+        '--http.port', this.port.toString(),
+      ],
+    }));
+  }
   this.loadBalancer = new quilt.LoadBalancer('elasticsearch-lb', this.containers);
 
   if (n > 1) {
