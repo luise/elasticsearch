@@ -42,8 +42,8 @@ Elasticsearch.prototype.addClient = function addClient(clnt) {
 };
 
 Elasticsearch.prototype.deploy = function deploy(depl) {
-  depl.deploy(this.containers);
-  depl.deploy(this.loadBalancer);
+  this.containers.forEach(container => container.deploy(depl));
+  this.loadBalancer.deploy(depl);
 };
 
 Elasticsearch.prototype.transportPorts = new quilt.PortRange(9300, 9400);

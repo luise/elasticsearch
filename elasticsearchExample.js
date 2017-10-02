@@ -7,4 +7,7 @@ const deployment = createDeployment({});
 const baseMachine = new Machine({ provider: 'Amazon' });
 deployment.deploy(baseMachine.asMaster());
 deployment.deploy(baseMachine.asWorker().replicate(clusterSize));
-deployment.deploy(new Elasticsearch(clusterSize).allowFromPublic());
+
+const elasticsearch = new Elasticsearch(clusterSize);
+elasticsearch.allowFromPublic();
+elasticsearch.deploy(deployment);
