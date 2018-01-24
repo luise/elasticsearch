@@ -25,7 +25,7 @@ function Elasticsearch(n) {
     });
   }
 
-  kelda.allow(this.containers, this.containers, this.transportPorts);
+  kelda.allowTraffic(this.containers, this.containers, this.transportPorts);
 }
 
 Elasticsearch.prototype.uri = function uri() {
@@ -33,12 +33,12 @@ Elasticsearch.prototype.uri = function uri() {
 };
 
 Elasticsearch.prototype.allowFromPublic = function allowFromPublic() {
-  kelda.allow(kelda.publicInternet, this.containers, this.port);
+  kelda.allowTraffic(kelda.publicInternet, this.containers, this.port);
   return this;
 };
 
 Elasticsearch.prototype.addClient = function addClient(clnt) {
-  this.loadBalancer.allowFrom(clnt, this.port);
+  kelda.allowTraffic(clnt, this.loadBalancer, this.port);
 };
 
 Elasticsearch.prototype.deploy = function deploy(depl) {
