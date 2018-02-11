@@ -34,7 +34,7 @@ function Elasticsearch(n) {
 }
 
 Elasticsearch.prototype.uri = function uri() {
-  return `http://${this.loadBalancer.hostname()}:${this.port}`;
+  return `http://${this.loadBalancer.getHostname()}:${this.port}`;
 };
 
 Elasticsearch.prototype.allowFromPublic = function allowFromPublic() {
