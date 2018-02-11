@@ -7,14 +7,19 @@ function getHostname(c) {
 function Elasticsearch(n) {
   this.containers = [];
   for (let i = 0; i < n; i += 1) {
-    this.containers.push(new kelda.Container('elasticsearch', 'elasticsearch:2.4', {
+    this.containers.push(new kelda.Container({
+      name: 'elasticsearch',
+      image: 'elasticsearch:2.4',
       command: [
         '--transport.tcp.port', `${this.transportPorts.min}-${this.transportPorts.max}`,
         '--http.port', this.port.toString(),
       ],
     }));
   }
-  this.loadBalancer = new kelda.LoadBalancer('elasticsearch-lb', this.containers);
+  this.loadBalancer = new kelda.LoadBalancer({
+    name: 'elasticsearch-lb',
+    containers: this.containers,
+  });
 
   if (n > 1) {
     const hosts = this.containers.map(getHostname).join(',');
